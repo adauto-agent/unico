@@ -1,0 +1,51 @@
+# TASK-UNICO-004-URGENT: Frontend Skeleton - Upload Form
+
+**Assigned to:** Veras (Frontend)
+**Priority:** 🔴 URGENT
+**Status:** Pending
+**Deadline:** 2026-02-27 06:00 (11 HOURS)
+
+---
+
+## 📋 Task
+
+Create simple HTML upload form (Vanilla JS, no framework).
+
+---
+
+## 🎯 Deliverables
+
+1. **Project structure:**
+```
+unico/
+  frontend/
+    index.html
+    style.css
+    app.js
+```
+
+2. **Features:**
+- File input (PDF only)
+- Upload button
+- Simple loading indicator
+- Download button (stub)
+
+3. **Design:**
+- Clean, minimal
+- Mobile-friendly
+- Vietnamese labels
+
+---
+
+## 💡 Notes
+
+- Use Vanilla JS (no React/Vue - too slow for 2-day sprint)
+- Keep it simple
+- Focus on functionality over beauty
+
+---
+
+**When complete:** Notify Gabi + push to GitHub
+
+---
+Gabi - 2026-02-26 19:10

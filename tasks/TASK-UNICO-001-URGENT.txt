@@ -1,0 +1,38 @@
+# TASK-UNICO-001-URGENT: Tech Stack + PDF Extraction Rules
+
+**Assigned to:** Nunes (Architecture)
+**Priority:** 🔴 URGENT
+**Status:** Pending
+**Deadline:** 2026-02-26 21:00 (2 HOURS FROM NOW)
+
+---
+
+## 📋 Task
+
+1. **Confirm tech stack** (pre-decided: Python + FastAPI + pdfplumber + openpyxl)
+2. **Define PDF extraction rules** for 27 columns
+
+---
+
+## 📁 Input
+
+- PDF samples: `/root/.openclaw/workspace/unico/docs/samples/`
+- Business rules: `/root/.openclaw/workspace/unico/docs/BỘ QUY TẮC QUẢN LÝ ĐƠN HÀNG UNICO.txt`
+
+---
+
+## 🎯 Deliverable
+
+Write to: `/root/.openclaw/workspace/unico/docs/EXTRACTION-MAPPING.md`
+
+Include:
+- Tech stack confirmation
+- Field-by-field extraction rules
+- Code snippets/examples if possible
+
+---
+
+**URGENT: Complete by 21:00 today!**
+
+---
+Gabi - 2026-02-26 19:10

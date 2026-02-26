@@ -1,0 +1,54 @@
+# TASK-UNICO-003-URGENT: Backend Skeleton - FastAPI Setup
+
+**Assigned to:** Vinicius (Backend)
+**Priority:** 🔴 URGENT
+**Status:** Pending
+**Deadline:** 2026-02-27 06:00 (11 HOURS)
+
+---
+
+## 📋 Task
+
+Setup FastAPI backend with basic upload endpoint.
+
+---
+
+## 🎯 Deliverables
+
+1. **Project structure:**
+```
+unico/
+  backend/
+    main.py
+    requirements.txt
+    routers/
+      upload.py
+```
+
+2. **Working endpoints:**
+- `POST /upload` - accepts PDF file
+- `GET /health` - health check
+
+3. **requirements.txt:**
+```
+fastapi
+uvicorn
+python-multipart
+pdfplumber
+openpyxl
+```
+
+---
+
+## 💡 Notes
+
+- Use FastAPI (not Flask) - faster, modern
+- Just skeleton - PDF parsing comes later
+- Focus on file upload handling first
+
+---
+
+**When complete:** Notify Gabi + push to GitHub
+
+---
+Gabi - 2026-02-26 19:10
