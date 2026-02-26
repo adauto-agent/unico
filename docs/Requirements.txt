@@ -1,0 +1,20 @@
+Đây là yêu cầu của khách hàng:
+
+Khách hàng cần một công cụ Web, chạy trên linux, giúp người dùng sử dụng máy tính  Windows thực hiện các chức năng sau:
+
+1. Trích xuất đơn đặt hàng
+1.1 Trích xuất dữ liệu từ đơn đặt hàng của khách hàng các thông tin cần thiết, để thêm vào một danh sách đơn hàng, và trả về cho khách hàng danh sách đơn hàng này.
+1.2 Input: Đơn đặt hàng của khách hàng 
+	- Sử dụng file .pdf, có format tùy ý theo từng công ty, đơn vị.
+	- Tham khảo đơn đặt hàng mẫu: CÁc file VYMEX COMPANY LIMITED - F26BULK - HDM-UB-11-2025-0291.pdf và VYMEX COMPANY LIMITED - F26BULK - HDM-UB-12-2025-0227.pdf
+1.3 Output: Danh sách đơn hàng là một bảng tính (Spreadsheet) 
+	- Sử dụng file .slsx có thể lưu hoặc download để lưu dưới máy tính của người dùng.
+	- Mô tả về bảng tính này có thể tìm thấy ở file "BỘ QUY TẮC QUẢN LÝ ĐƠN HÀNG UNICO.txt"
+
+2. Tạo và in hóa đơn từ danh sách đơn hàng: TBD
+	Hiện tại chưa cần thiết
+
+Các yêu cầu phi chức năng:
+1. Performance: Nhanh, Việc trích xuất dưới 1 phút với phiếu đặt hàng khoảng 100 items (Dòng).
+2. Giao diện đơn giản, dễ dàng sử dụng.
+3. KHông cần User hay phân quyền, ai cũng có thể sử dụng.

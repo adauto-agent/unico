@@ -1,0 +1,69 @@
+BỘ QUY TẮC QUẢN LÝ ĐƠN HÀNG UNICO
+1. Cấu trúc bảng tính 27 cột bắt buộc)
+Bảng dữ liệu phải được trình bày theo đúng thứ tự các cột sau:
+GHI CHÚ: ĐỂ TRỐNG
+STT: ĐẾM TĂNG DẦN THEO TỪNG ORDER
+HĐ : ĐỂ TRỐNG
+
+NGÀY NHẬN ĐƠN: Lấy theo ngày "ISSUED DATE" trong file hoặc ngày nhận email.
+
+NGÀY XUẤT HÀNG: Lấy từ mục "Ship Date" trong đơn hàng.
+
+NGÀY HÀNG ĐẾN: Luôn bằng Ngày xuất hàng + 2 ngày.
+
+PKL: Mặc định để trống hoàn toàn.
+
+NGƯỜI ĐẶT HÀNG: Ưu tiên lấy tên từ Email (ví dụ: Nguyễn Quyên_IS3). Nếu không có email, lấy tên tại mục "From" trong PDF.
+
+KHÁCH HÀNG: Mặc định ghi UNICO.
+
+BILL TO: THEO EMAIL KHÁCH GỬI
+CONSIGNEE: Đơn vị nhận hàng (theo quy tắc Việt hóa ở mục 3).
+
+PL & TK: Mặc định để trống.
+
+TỈNH: Tên tỉnh của đơn vị nhận hàng (Bắc Giang hoặc Yên Bái).
+
+STYLE: Mã Style hoặc Article từ đơn hàng.
+
+PO: Tên đơn hàng ghép theo công thức: [Buyer] + [Season] + [MPO-No].
+SHEET: để trống
+pkl	để trống
+Mô tả: để trống
+MÃ GỐC: để trống	
+MÃ HÀNG: để trống	
+Color: để trống	
+width: để trống	
+ĐVT: để trống
+SỐ LƯỢNG: Số lượng hàng hóa (YDS/PCS).
+
+2. Quy tắc xử lý số liệu
+Liệt kê chi tiết: Phải tách riêng từng dòng Style lẻ, không được gộp chung trừ khi đơn hàng yêu cầu.
+
+Định dạng số:
+
+Bỏ hoàn toàn dấu phẩy phân cách hàng nghìn (Ví dụ: 1,500 ghi là 1500).
+
+Hiển thị dưới dạng số nguyên thuần túy, không có phần thập phân.
+
+Kiểm tra toàn diện: Phải đọc hết tất cả các trang của file PDF để đảm bảo tổng số lượng khớp với con số "Grand Total".
+
+3. Quy tắc Việt hóa địa danh
+Dựa vào địa chỉ "Ship to" trong đơn hàng để tự động chuyển đổi:
+
+Nếu địa chỉ là BAC NINH hoặc UNICO GLOBAL VN:
+
+BILL TO / CONSIGNEE: Ghi là UNICO BẮC GIANG.
+
+TỈNH: Ghi là BẮC GIANG.
+
+Nếu địa chỉ là LAO CAI, YEN BAI hoặc UNICO GLOBAL YB:
+
+BILL TO / CONSIGNEE: Ghi là UNICO YÊN BÁI.
+
+TỈNH: Ghi là YÊN BÁI.
+
+4. Định dạng hệ thống
+Ngôn ngữ: Sử dụng Tiếng Việt hoàn toàn.
+
+Định dạng ngày: Luôn sử dụng Ngày/Tháng/Năm (DD/MM/YYYY).
