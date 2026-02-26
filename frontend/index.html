@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNICO - Trích xuất đơn hàng từ PDF</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐻 UNICO</h1>
+            <p>Trích xuất đơn hàng từ PDF sang Excel</p>
+        </div>
+
+        <div class="upload-section">
+            <div class="upload-box" id="uploadBox">
+                <div class="upload-icon">📄</div>
+                <h3>Kéo thả file PDF vào đây</h3>
+                <p>hoặc</p>
+                <input type="file" id="fileInput" accept=".pdf" hidden>
+                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                    Chọn file PDF
+                </button>
+            </div>
+        </div>
+
+        <div class="processing" id="processingSection" style="display: none;">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Đang xử lý...</p>
+            </div>
+        </div>
+
+        <div class="result" id="resultSection" style="display: none;">
+            <div class="success-icon">✅</div>
+            <h3>Xử lý thành công!</h3>
+            <p id="resultInfo"></p>
+            <button class="btn btn-success" id="downloadBtn">
+                📥 Tải xuống Excel
+            </button>
+            <button class="btn btn-secondary" onclick="location.reload()">
+                🔄 Xử lý file khác
+            </button>
+        </div>
+
+        <div class="error" id="errorSection" style="display: none;">
+            <div class="error-icon">❌</div>
+            <h3>Có lỗi xảy ra</h3>
+            <p id="errorMessage"></p>
+            <button class="btn btn-secondary" onclick="location.reload()">
+                🔄 Thử lại
+            </button>
+        </div>
+
+        <div class="info-section">
+            <h3>Hướng dẫn sử dụng</h3>
+            <ul>
+                <li>Chọn hoặc kéo thả file PDF đơn hàng vào</li>
+                <li>Hệ thống sẽ tự động trích xuất dữ liệu</li>
+                <li>Tải xuống file Excel với 27 cột theo chuẩn</li>
+                <li>Không cần đăng nhập, ai cũng có thể sử dụng</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 UNICO - Hệ thống trích xuất đơn hàng</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
