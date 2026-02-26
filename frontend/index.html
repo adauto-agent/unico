@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNICO - Trích xuất đơn hàng từ PDF</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="container">
@@ -26,9 +26,21 @@
         </div>
 
         <div class="processing" id="processingSection" style="display: none;">
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>Đang xử lý...</p>
+            <div class="progress-container">
+                <h3>⏳ Đang xử lý...</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progressPercent">0%</span>
+                </div>
+            </div>
+            
+            <div class="log-container">
+                <h4>📋 Log xử lý:</h4>
+                <div class="log-box" id="logBox">
+                    <!-- Logs will be inserted here -->
+                </div>
             </div>
         </div>
 
@@ -68,6 +80,6 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <script src="/static/app.js"></script>
 </body>
 </html>

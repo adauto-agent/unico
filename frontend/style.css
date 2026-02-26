@@ -224,3 +224,136 @@ body {
         margin: 5px 0;
     }
 }
+
+/* Progress Bar Styles */
+.progress-container {
+    margin-bottom: 30px;
+}
+
+.progress-container h3 {
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 30px;
+    background: #e2e8f0;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    width: 0%;
+    transition: width 0.5s ease;
+    border-radius: 15px;
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #667eea;
+}
+
+/* Log Container Styles */
+.log-container {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.log-container h4 {
+    color: #667eea;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.log-box {
+    background: #1a1a2e;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    padding: 15px;
+    border-radius: 10px;
+    max-height: 250px;
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 1.6;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.log-entry {
+    margin-bottom: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-time {
+    color: #888;
+    margin-right: 8px;
+}
+
+.log-success {
+    color: #00ff00;
+}
+
+.log-info {
+    color: #00bfff;
+}
+
+.log-warning {
+    color: #ffaa00;
+}
+
+.log-error {
+    color: #ff4444;
+}
+
+/* Scrollbar styling for log box */
+.log-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.log-box::-webkit-scrollbar-track {
+    background: #0d0d1a;
+    border-radius: 4px;
+}
+
+.log-box::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 4px;
+}
+
+.log-box::-webkit-scrollbar-thumb:hover {
+    background: #764ba2;
+}
