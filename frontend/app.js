@@ -116,7 +116,7 @@ async function extractData() {
         downloadUrl = `${API_URL}/download/${data.filename}`;
         
         // Show preview
-        displayPreview(data.preview_data);
+        displayPreview(data.preview_data || []);
         
         updateProgress(100);
         addLog('success', '🎉 Hoàn tất! Bạn có thể xem trước kết quả bên dưới.');

@@ -259,6 +259,27 @@ select#savedConfigs {
     margin-top: 15px;
 }
 
+.log-entry {
+    margin-bottom: 5px;
+}
+
+.log-time {
+    color: #888;
+    margin-right: 8px;
+}
+
+.log-success {
+    color: #00ff00;
+}
+
+.log-info {
+    color: #00bfff;
+}
+
+.log-error {
+    color: #ff4444;
+}
+
 /* Preview Section */
 .preview-section {
     margin-top: 30px;
