@@ -13,6 +13,25 @@
             <p>Trích xuất đơn hàng từ PDF sang Excel</p>
         </div>
 
+        <div class="config-section" id="configSection">
+            <h3>📋 Yêu cầu trích xuất</h3>
+            <textarea id="extractionRequest" placeholder="Nhập yêu cầu trích xuất dữ liệu...&#10;Ví dụ: Trích xuất tất cả các đơn hàng, bỏ qua các dòng trống, lọc theo ngày..."></textarea>
+            
+            <div class="saved-configs">
+                <div class="config-header">
+                    <h4>📁 Cấu hình đã lưu</h4>
+                    <button class="btn-icon" onclick="deleteConfig()" title="Xóa cấu hình">🗑️</button>
+                </div>
+                <select id="savedConfigs" onchange="loadConfig()">
+                    <option value="">-- Chọn cấu hình --</option>
+                </select>
+                <div class="save-config">
+                    <input type="text" id="configName" placeholder="Tên cấu hình...">
+                    <button class="btn btn-save" onclick="saveConfig()">💾 Lưu cấu hình</button>
+                </div>
+            </div>
+        </div>
+
         <div class="upload-section">
             <div class="upload-box" id="uploadBox">
                 <div class="upload-icon">📄</div>
@@ -23,6 +42,10 @@
                     Chọn file PDF
                 </button>
             </div>
+            <p class="selected-file" id="selectedFileText"></p>
+            <button class="btn btn-extract" id="extractBtn" onclick="extractData()" disabled>
+                ⚡ Thực thi trích xuất
+            </button>
         </div>
 
         <div class="processing" id="processingSection" style="display: none;">
@@ -44,16 +67,24 @@
             </div>
         </div>
 
-        <div class="result" id="resultSection" style="display: none;">
-            <div class="success-icon">✅</div>
-            <h3>Xử lý thành công!</h3>
-            <p id="resultInfo"></p>
-            <button class="btn btn-success" id="downloadBtn">
-                📥 Tải xuống Excel
-            </button>
-            <button class="btn btn-secondary" onclick="location.reload()">
-                🔄 Xử lý file khác
-            </button>
+        <div class="preview-section" id="previewSection" style="display: none;">
+            <h3>📊 Xem trước kết quả</h3>
+            <div class="table-container">
+                <table id="previewTable">
+                    <thead>
+                        <tr id="tableHeader"></tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+            <div class="preview-actions">
+                <button class="btn btn-success" id="downloadBtn">
+                    📥 Tải xuống Excel
+                </button>
+                <button class="btn btn-secondary" onclick="location.reload()">
+                    🔄 Xử lý file khác
+                </button>
+            </div>
         </div>
 
         <div class="error" id="errorSection" style="display: none;">
@@ -68,10 +99,10 @@
         <div class="info-section">
             <h3>Hướng dẫn sử dụng</h3>
             <ul>
+                <li>Nhập yêu cầu trích xuất hoặc chọn cấu hình đã lưu</li>
                 <li>Chọn hoặc kéo thả file PDF đơn hàng vào</li>
-                <li>Hệ thống sẽ tự động trích xuất dữ liệu</li>
-                <li>Tải xuống file Excel với 27 cột theo chuẩn</li>
-                <li>Không cần đăng nhập, ai cũng có thể sử dụng</li>
+                <li>Nhấn "Thực thi trích xuất" để bắt đầu</li>
+                <li>Kiểm tra dữ liệu trong bảng xem trước và tải xuống file Excel</li>
             </ul>
         </div>
 

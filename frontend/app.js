@@ -1,18 +1,22 @@
 const API_URL = window.location.origin;
 
 let selectedFile = null;
+let downloadUrl = null;
 
 // DOM Elements
 const uploadBox = document.getElementById('uploadBox');
 const fileInput = document.getElementById('fileInput');
+const extractBtn = document.getElementById('extractBtn');
+const extractionRequest = document.getElementById('extractionRequest');
+const selectedFileText = document.getElementById('selectedFileText');
 const processingSection = document.getElementById('processingSection');
-const resultSection = document.getElementById('resultSection');
+const previewSection = document.getElementById('previewSection');
 const errorSection = document.getElementById('errorSection');
-const resultInfo = document.getElementById('resultInfo');
-const errorMessage = document.getElementById('errorMessage');
-const downloadBtn = document.getElementById('downloadBtn');
-
-let downloadUrl = null;
+const configSection = document.getElementById('configSection');
+const uploadSection = document.querySelector('.upload-section');
+const savedConfigs = document.getElementById('savedConfigs');
+const configName = document.getElementById('configName');
+const logBox = document.getElementById('logBox');
 
 // Drag and drop handlers
 uploadBox.addEventListener('dragover', (e) => {
@@ -30,173 +34,216 @@ uploadBox.addEventListener('drop', (e) => {
 
     const files = e.dataTransfer.files;
     if (files.length > 0) {
-        handleFile(files[0]);
+        handleFileSelect(files[0]);
     }
 });
 
 // File input handler
 fileInput.addEventListener('change', (e) => {
     if (e.target.files.length > 0) {
-        handleFile(e.target.files[0]);
+        handleFileSelect(e.target.files[0]);
     }
 });
 
-// Handle selected file
-function handleFile(file) {
+// Handle file selection
+function handleFileSelect(file) {
     if (file.type !== 'application/pdf') {
         showError('Vui lòng chọn file PDF');
         return;
     }
 
     selectedFile = file;
-    uploadFile(file);
+    selectedFileText.textContent = `📁 File đã chọn: ${file.name}`;
+    checkExtractReady();
 }
 
-// Upload file to backend
-async function uploadFile(file) {
+// Extraction request handler
+extractionRequest.addEventListener('input', checkExtractReady);
+
+function checkExtractReady() {
+    if (selectedFile && extractionRequest.value.trim() !== '') {
+        extractBtn.disabled = false;
+    } else {
+        extractBtn.disabled = true;
+    }
+}
+
+// Execute extraction
+async function extractData() {
+    if (!selectedFile) return;
+
     // Show processing
-    uploadBox.parentElement.style.display = 'none';
+    configSection.style.display = 'none';
+    uploadSection.style.display = 'none';
     processingSection.style.display = 'block';
-    resultSection.style.display = 'none';
     errorSection.style.display = 'none';
+    previewSection.style.display = 'none';
 
-    // Clear previous logs
-    const logBox = document.getElementById('logBox');
+    // Clear logs
     logBox.innerHTML = '';
-
-    // Initialize progress
     updateProgress(0);
     
-    // Add initial log
-    addLog('info', `Bắt đầu xử lý file: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`);
+    addLog('info', `Bắt đầu xử lý file: ${selectedFile.name}`);
+    addLog('info', `Yêu cầu: "${extractionRequest.value.trim()}"`);
     
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', selectedFile);
+    formData.append('request', extractionRequest.value.trim());
 
     try {
-        // Step 1: Uploading
         updateProgress(10);
-        addLog('info', '📤 Đang upload file lên server...');
-        await sleep(500);
-        
-        updateProgress(20);
-        addLog('success', '✓ Upload thành công!');
-        
-        // Step 2: Reading PDF
-        updateProgress(30);
-        addLog('info', '📄 Đang đọc file PDF...');
+        addLog('info', '📤 Đang gửi yêu cầu lên server...');
         
         const response = await fetch(`${API_URL}/upload`, {
             method: 'POST',
             body: formData
         });
-        
-        updateProgress(50);
-        addLog('success', '✓ Đọc file PDF hoàn tất!');
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.detail || 'Upload failed');
+            throw new Error(errorData.detail || 'Xử lý thất bại');
         }
 
-        // Step 3: Processing
-        updateProgress(60);
-        addLog('info', '🔍 Đang phân tích cấu trúc PDF...');
-        await sleep(300);
-        
-        updateProgress(70);
-        addLog('info', '📊 Đang trích xuất dữ liệu từ bảng...');
-        await sleep(300);
-        
-        updateProgress(80);
-        addLog('success', '✓ Trích xuất dữ liệu hoàn tất!');
-
-        // Step 4: Generating Excel
-        updateProgress(85);
-        addLog('info', '📝 Đang tạo file Excel với 27 cột...');
-        await sleep(200);
+        updateProgress(50);
+        addLog('success', '✓ Server đã nhận file và đang xử lý...');
         
         const data = await response.json();
         
-        updateProgress(95);
-        addLog('success', `✓ Đã trích xuất ${data.items_count} dòng dữ liệu!`);
+        updateProgress(80);
+        addLog('info', `🔍 Đã trích xuất ${data.items_count} dòng dữ liệu.`);
         
-        // Step 5: Complete
-        updateProgress(100);
-        addLog('success', '🎉 Xử lý hoàn tất! File Excel đã sẵn sàng để tải xuống.');
-        await sleep(500);
-
-        // Show success
-        processingSection.style.display = 'none';
-        resultSection.style.display = 'block';
-
-        resultInfo.textContent = `Đã trích xuất ${data.items_count} dòng từ file "${file.name}"`;
-
         // Setup download
         downloadUrl = `${API_URL}/download/${data.filename}`;
-        downloadBtn.onclick = () => {
-            addLog('info', '📥 Đang tải xuống file Excel...');
-            window.location.href = downloadUrl;
-        };
+        
+        // Show preview
+        displayPreview(data.preview_data);
+        
+        updateProgress(100);
+        addLog('success', '🎉 Hoàn tất! Bạn có thể xem trước kết quả bên dưới.');
+        
+        setTimeout(() => {
+            processingSection.style.display = 'none';
+            previewSection.style.display = 'block';
+        }, 1000);
 
     } catch (error) {
         addLog('error', `❌ Lỗi: ${error.message}`);
-        updateProgress(0);
-        
-        setTimeout(() => {
-            showError(error.message || 'Có lỗi xảy ra khi xử lý file. Vui lòng thử lại.');
-        }, 1000);
+        setTimeout(() => showError(error.message), 1000);
     }
 }
 
-// Update progress bar
+// Display Preview Table
+function displayPreview(previewData) {
+    const tableHeader = document.getElementById('tableHeader');
+    const tableBody = document.getElementById('tableBody');
+    
+    tableHeader.innerHTML = '';
+    tableBody.innerHTML = '';
+
+    if (!previewData || previewData.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="100%">Không có dữ liệu hiển thị</td></tr>';
+        return;
+    }
+
+    // Headers
+    const headers = Object.keys(previewData[0]);
+    headers.forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        tableHeader.appendChild(th);
+    });
+
+    // Rows (max 10)
+    previewData.slice(0, 10).forEach(rowData => {
+        const tr = document.createElement('tr');
+        headers.forEach(header => {
+            const td = document.createElement('td');
+            td.textContent = rowData[header] || '';
+            tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+    });
+
+    // Setup download button
+    document.getElementById('downloadBtn').onclick = () => {
+        window.location.href = downloadUrl;
+    };
+}
+
+// --- Config Management ---
+function saveConfig() {
+    const name = configName.value.trim();
+    const request = extractionRequest.value.trim();
+
+    if (!name || !request) {
+        alert('Vui lòng nhập tên và yêu cầu trích xuất');
+        return;
+    }
+
+    const configs = JSON.parse(localStorage.getItem('unico_configs') || '{}');
+    configs[name] = request;
+    localStorage.setItem('unico_configs', JSON.stringify(configs));
+    
+    configName.value = '';
+    loadConfigList();
+    alert('Đã lưu cấu hình thành công!');
+}
+
+function loadConfigList() {
+    const configs = JSON.parse(localStorage.getItem('unico_configs') || '{}');
+    savedConfigs.innerHTML = '<option value="">-- Chọn cấu hình --</option>';
+    
+    Object.keys(configs).forEach(name => {
+        const option = document.createElement('option');
+        option.value = name;
+        option.textContent = name;
+        savedConfigs.appendChild(option);
+    });
+}
+
+function loadConfig() {
+    const name = savedConfigs.value;
+    if (!name) return;
+
+    const configs = JSON.parse(localStorage.getItem('unico_configs') || '{}');
+    extractionRequest.value = configs[name];
+    checkExtractReady();
+}
+
+function deleteConfig() {
+    const name = savedConfigs.value;
+    if (!name) return;
+
+    if (confirm(`Bạn có chắc muốn xóa cấu hình "${name}"?`)) {
+        const configs = JSON.parse(localStorage.getItem('unico_configs') || '{}');
+        delete configs[name];
+        localStorage.setItem('unico_configs', JSON.stringify(configs));
+        loadConfigList();
+        extractionRequest.value = '';
+        checkExtractReady();
+    }
+}
+
+// --- Utils ---
 function updateProgress(percent) {
-    const progressFill = document.getElementById('progressFill');
-    const progressPercent = document.getElementById('progressPercent');
-    
-    progressFill.style.width = `${percent}%`;
-    progressPercent.textContent = `${percent}%`;
+    document.getElementById('progressFill').style.width = `${percent}%`;
+    document.getElementById('progressPercent').textContent = `${percent}%`;
 }
 
-// Add log entry
 function addLog(type, message) {
-    const logBox = document.getElementById('logBox');
     const timestamp = new Date().toLocaleTimeString('vi-VN');
-    
-    const logEntry = document.createElement('div');
-    logEntry.className = `log-entry log-${type}`;
-    logEntry.innerHTML = `<span class="log-time">[${timestamp}]</span>${message}`;
-    
-    logBox.appendChild(logEntry);
-    logBox.scrollTop = logBox.scrollHeight; // Auto scroll to bottom
+    const entry = document.createElement('div');
+    entry.className = `log-entry log-${type}`;
+    entry.innerHTML = `<span class="log-time">[${timestamp}]</span> ${message}`;
+    logBox.appendChild(entry);
+    logBox.scrollTop = logBox.scrollHeight;
 }
 
-// Sleep helper
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// Show error
 function showError(message) {
-    uploadBox.parentElement.style.display = 'none';
     processingSection.style.display = 'none';
-    resultSection.style.display = 'none';
     errorSection.style.display = 'block';
-
-    errorMessage.textContent = message;
+    document.getElementById('errorMessage').textContent = message;
 }
 
-// Health check
-async function checkHealth() {
-    try {
-        const response = await fetch(`${API_URL}/health`);
-        if (!response.ok) {
-            console.warn('Backend health check failed');
-        }
-    } catch (error) {
-        console.warn('Cannot connect to backend');
-    }
-}
-
-// Check health on load
-checkHealth();
+// Init
+loadConfigList();
